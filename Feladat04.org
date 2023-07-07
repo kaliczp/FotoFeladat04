@@ -24,7 +24,8 @@
 #+creator: Emacs 27.1 (Org mode 9.3)
 
 Feladatomban az alább megadott paraméterekkel rendelkező repülés
-végrehajtásához egy /DJI Mavic 3E UAV/-t választottam.
+végrehajtásához a tanszéken is rendelkezésre álló DJI Mavic Enterprise
+családba tartozó /DJI Mavic 3M UAV/-t választottam.
 A kiválasztott drónnal egy 1200 \cdot 600 m-es területet (lásd az [[fig:teroutline]]. ábrát) mérünk fel úgy, hogy
 a képek terepi felbontása 2 cm;
 a képek között átfedés ($p$) 85%-os;
@@ -52,7 +53,7 @@ plot(ter.gg)
 
 
 * A kiválasztott UAV ismertetése
-A [[fig:DJIMavic3Eoutline]]. ábrán látható DJI Mavic 3E UAV
+A [[fig:DJIMavic3Moutline]]. ábrán látható DJI Mavic 3M UAV
 specifikációját a honlapon közzétett adatok alapján adom meg
 (https://enterprise.dji.com/mavic-3-enterprise/specs). Az eszköz
 /maximális repülési ideje/ szélmentes körülmények között a
@@ -67,14 +68,14 @@ terepmodell nélkül képes az optimális repülési magasság
 meghatározására. További előnye a kis méret és az összecsukhatóság,
 amely a terepi feladatok megoldásánál hasznos tulajdonság.
 
-#+CAPTION[DJI Mavic 3E]: DJI Mavic 3E UAV körvonalrajza
-#+NAME:   fig:DJIMavic3Eoutline
-[[file:DJIMavic3Eoutlinemod.pdf]]
+#+CAPTION[DJI Mavic 3M]: DJI Mavic 3M UAV körvonalrajza
+#+NAME:   fig:DJIMavic3Moutline
+[[file:DJIMavic3Moutlinemod.pdf]]
 
 * Az UAV-n található kamera
 A háromtengelyű gimbalra szerelt kamera két érzékelővel rendelkezik.
 A lejebb bemutatott 20 MP-es 4:3 képarányú (Wide) kamera fölött egy 12
-MP-es zoom kamera található (lásd a [[fig:DJIMavic3Eoutline]]. ábrát),
+MP-es zoom kamera található (lásd a [[fig:DJIMavic3Moutline]]. ábrát),
 amelyet jól használható kiegészítő funkció, de ez a felvételek
 készítésénél nem használt, így a bemutatásától most eltekintek.
 
@@ -234,7 +235,7 @@ grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
 Először kiszámolom a feladatnak megfelelően.
 \[v = \frac{B}{dt} = 5.934\,\frac{\mathrm{m}}{\mathrm{s}}\]
 
-Ha kihasználjuk a DJI Mavic 3E képességeit a képeket 0.7 másodpercenként készíthetjük,
+Ha kihasználjuk a DJI Mavic 3M képességeit a képeket 0.7 másodpercenként készíthetjük,
 így a sebesség akár 16.95 m/s is lehetne, amelyet a drón még talán enyhén szeles időben
 is tud, ugyanis 21 m/s a maximális sebessége haladási irányban.
 
