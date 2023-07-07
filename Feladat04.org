@@ -90,7 +90,10 @@ ferde-tengelyű felvételeket.
 
 A gyártó által megadott adatok alapján a /képi pixelméret/
 5280\cdot{}3956 pixel, a kamera /látószöge/ 84°, végül az /ekvivalens
-fókusztávolság/ (c_{35}) 24 mm-es.
+fókusztávolság/ (c_{35}) 24 mm-es. Az interneten közzétett alternatív
+forrásból a kameraállandó (\(c\)) értéke 12.3 mm. A szenzor mérete
+17.3 \cdot 13 mm.  Az eszközzel készített kép alapján a kamera állandó
+12.29 mm. A továbbiakban ez alapján fogom elvégezni a számításokat.
 
 ** R-kód a kamera paramétereihez                                   :noexport:
 #+begin_src R
