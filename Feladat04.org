@@ -1,0 +1,374 @@
+#+title: UAV repülés tervezése
+#+date: 2023. július 6.
+#+author: Kalicz Péter
+#+email: kalicz.peter@uni-sopron.hu
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:nil
+#+options: p:nil pri:nil prop:nil stat:t tags:nil tasks:nil tex:t
+#+options: timestamp:nil title:t toc:nil todo:t |:t
+#+latex_class: article
+#+latex_class_options: [a4paper]
+#+latex_header: \usepackage[margin=1in]{geometry}
+#+latex_header: \usepackage{indentfirst}
+#+latex_header: \usepackage[english,hungarian]{babel}
+#+latex_header: \frenchspacing
+#+latex_header_extra:
+#+description:
+#+keywords:
+#+subtitle:
+#+latex_compiler: pdflatex
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 27.1 (Org mode 9.3)
+
+Feladatomban az alább megadott paraméterekkel rendelkező repülés
+végrehajtásához egy /DJI Mavic 3E UAV/-t választottam.
+A kiválasztott drónnal egy 1200 \cdot 600 m-es területet (lásd az [[fig:teroutline]]. ábrát) mérünk fel úgy, hogy
+a képek terepi felbontása 2 cm;
+a képek között átfedés ($p$) 85%-os;
+a sorok közötti átfedés ($q$) 55%-os legyen.
+A feladat végrehajtását a feladatkiírásnak megfelelően részletezem.
+
+#+CAPTION[Vázlat]: A térképezendő terület vázlata
+#+NAME:   fig:teroutline
+[[file:simpleter.pdf]]
+
+
+** Terület ábra                                                    :noexport:
+#+header: :width 8 :height 8
+#+begin_src R :file simpleter.pdf :results graphics file
+library(sf)
+library(ggplot2)
+library(ggspatial)
+ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
+# plot(ter, axes = TRUE)
+ter.gg <- ggplot(data = ter) +
+geom_sf() +
+annotation_scale(location = "bl", width_hint = 0.4)
+plot(ter.gg)
+#+end_src
+
+
+* A kiválasztott UAV ismertetése
+A [[fig:DJIMavic3Eoutline]]. ábrán látható DJI Mavic 3E UAV
+specifikációját a honlapon közzétett adatok alapján adom meg
+(https://enterprise.dji.com/mavic-3-enterprise/specs). Az eszköz
+/maximális repülési ideje/ szélmentes körülmények között a
+tengerszintről emelkedve, 100% töltöttségről indulva, állandó 9 m/s-os
+(32.4 km/h) sebességgel repülve 45 perc. A /maximális repülési
+távolság/ 32 km, /magasság/ 6000 m hasznos teher nélkül.Az emelkedés
+és landolás /legfeljebb 12 m/s szélsebsség/ mellett történhet.  Az
+opcionális RTK modul használatával 0.1 m pontosan tud navigálni
+illesztőpontok használata nélkül. Az eszköz további előnyös
+tulajdonsága, hogy a beépített szenzorainak köszönhetően előzetes
+terepmodell nélkül képes az optimális repülési magasság
+meghatározására. További előnye a kis méret és az összecsukhatóság,
+amely a terepi feladatok megoldásánál hasznos tulajdonság.
+
+#+CAPTION[DJI Mavic 3E]: DJI Mavic 3E UAV körvonalrajza
+#+NAME:   fig:DJIMavic3Eoutline
+[[file:DJIMavic3Eoutlinemod.pdf]]
+
+* Az UAV-n található kamera
+A háromtengelyű gimbalra szerelt kamera két érzékelővel rendelkezik.
+A lejebb bemutatott 20 MP-es 4:3 képarányú (Wide) kamera fölött egy 12
+MP-es zoom kamera található (lásd a [[fig:DJIMavic3Eoutline]]. ábrát),
+amelyet jól használható kiegészítő funkció, de ez a felvételek
+készítésénél nem használt, így a bemutatásától most eltekintek.
+
+A felvételezés tervezéséhez figyelembe vett nagylátószögű főkamera
+(Wide) érzékelője a gyenge fényviszonyok között is jó képet adó, nagy
+méretű 3.3 \micro{}m-es pixelekkel rendelkezik. Az elmozdulás mentes
+képek készítését támogató 0.7 másodperces intervallumú képkészítésre
+alkalmas mechanikus elsütőberendezést építettek bele, amely a
+légifényképezési feladatok gyors végrahajtását teszi lehetővé azáltal,
+hogy a sebesség miatti elmosódás lehetőségét csökkenti. A térképezési
+feladatok végrehajtásához a gimbal segítségével automatikusan készít
+ferde-tengelyű felvételeket.
+
+A gyártó által megadott adatok alapján a /képi pixelméret/
+5280\cdot{}3956 pixel, a kamera /látószöge/ 84°, végül az /ekvivalens
+fókusztávolság/ (c_{35}) 24 mm-es.
+
+** R-kód a kamera paramétereihez                                   :noexport:
+#+begin_src R
+  ## Egyenértékű fókusztávolság
+  c_35 <- 24
+  ## A 35 mm film átlója
+  s_35_atlo <- sqrt( 36 ^2 + 24^2)
+
+#+end_src
+
+#+RESULTS:
+: 20
+
+
+
+* A tervezett repülés paraméterei
+** Méretarány
+\[a_k = \frac{res}{res'} =  6060.606\]
+
+\[M_k = 1:6060\]
+** Repülési magasság
+\[h_0 = \frac{c_{35} / 1000}{a_k} = 145.5 \mathrm{m}\]
+
+Ez túl magas. 120 m-en szabad repülni. Célszerű lenne nagyobb felbontással továbbszámolni,
+de most a konzultációig hagyom.
+
+** Terepi képméret
+\[S_x = s'_x \cdot a_k = 105.6 \mathrm{m}\]
+
+\[S_y  = s'_x \cdot a_k = 79.12 \mathrm{m}\]
+
+#+CAPTION[Vázlat]: A térképezendő terület és a kiszámított terepi képméret
+#+NAME:   fig:terS
+[[file:terS.pdf]]
+
+
+
+** Terület ábra terepi képmérettel                                 :noexport:
+#+header: :width 8 :height 8
+#+begin_src R :file terS.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
+
+
+  ter2 <- c(ter, kep)
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:terS.pdf]]
+
+
+** Bázistávolság
+\[B = S_y \cdot (1-p) =  11.868\,\mathrm{m}\]
+** Sortávolság
+\[A = S_x * (1-q) = 47.52\,\mathrm{m}\]
+** Sorok száma
+\[n_s = (H - Sy (2p-1))/ B + 1 = 97.4455\]
+A sorok száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény a [[fig:tersorell]]. ábrán.
+
+#+CAPTION[SorEll]: A sorok grafikus ellenőrzése
+#+NAME:   fig:tersorell
+[[file:tersorell.pdf]]
+
+** Grafikus ellenőrzés bázis irány                                 :noexport:
+#+header: :width 8 :height 8
+#+begin_src R :file tersorell.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
+
+  kepek <- c(kep, kep + c(0,11.868))
+
+  for(szor in 2:98) {
+      kepek <- c(kepek, kep + c(0, szor * 11.868))
+  }
+
+  ter2 <- c(ter, kepek - c(0, 11.868))
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:tersorell.pdf]]
+
+** Képek száma
+\[n_k = ( W - S_x) / A + 1 = 11.404\]
+
+A bázis irányra merőlegesen tehát 12 képnek kell lennie. A számítást
+grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
+
+#+CAPTION[SorEll]: Az oszlopok grafikus ellenőrzése
+#+NAME:   fig:teroszlell
+[[file:teroszlell.pdf]]
+
+** Grafikus ellenőrzés bázis irányra merőleges                     :noexport:
+#+header: :width 8 :height 8
+#+begin_src R :file teroszlell.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
+
+  kepek <- c(kep, kep - c(47.52,0))
+
+  for(szor in 2:12) {
+      kepek <- c(kepek, kep - c(szor * 47.52, 0))
+  }
+
+  ter2 <- c(ter, kepek - c(105.6-47.52, 0))
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:teroszlell.pdf]]
+
+** Összes kép
+\[n_{sum} = n_s \cdot n_k = 1176\,\mathrm{db}\]
+ 
+** Repülési sebesség, ha 2 mp-enként készítünk felvételeket
+Először kiszámolom a feladatnak megfelelően.
+\[v = \frac{B}{dt} = 5.934\,\frac{\mathrm{m}}{\mathrm{s}}\]
+
+Ha kihasználjuk a DJI Mavic 3E képességeit a képeket 0.7 másodpercenként készíthetjük,
+így a sebesség akár 16.95 m/s is lehetne, amelyet a drón még talán enyhén szeles időben
+is tud, ugyanis 21 m/s a maximális sebessége haladási irányban.
+
+** A terület felméréséhez szükséges idő
+Ehhez a repülési utat kell meghatározni először. A repülési hossz
+\((n_s - 1) \cdot B = 1151.2\,\mathrm{m}\). Ezt n_k-szor tesszük meg
+(\(n_k \cdot 1151.2\)), így 13\,814 m-t kell fényképezés idején
+megtenni. Ehhez hozzáadjuk a sorok közötti utat (\((n_k - 1) \cdot
+A\)), azaz 522.7 m-t. Tehát összesen kis kerekítéssel 14\,337 m-t kell
+repülni fényképezés közben.
+
+\[t = s / v = 2416 \mathrm{s}\]
+
+A repülés idő tehát kicsivel több mint 40 perc, amit az UAV egy
+feltöltéssel repülhetne (a specifikáció szerint 45 percet tud), de még
+a felszállást és a leszállást is bele kell kalkulálni. Normál módban 6
+m/s sebességgel emelkedhet és süllyedhet, ami a h_0 repülési magasság
+eléréséhez és az ereszkedéshez 2 * 24 másodpercet hozzáad. Így a repülési
+idő 41 percnek adódik, amit elméletileg tud a drón teljesíteni, de inkább
+két részre bontva repülnék.
+
+** R-kód a számításokhoz
+#+begin_src R
+  ## Érzékelő pixelméret
+  res.erz <- 0.0033 #mm a reklám anyagból 3.3 mikron
+  ## Terepi felbontás
+  res <- 0.02 #m a kiírásból
+  ## Méretarányszám
+  a.k <- res * 1000/res.erz
+  ## Egyenértékű fókusztávolság
+  c.35 <- 24 #mm a kézikönyvből
+  ## Repülési magasság
+  h.0 <- c.35/1000 * a.k
+  ## Érzékelő felbontás
+  pix.x <- 5280
+  pix.y <- 3956
+  sv.x <- res.erz * pix.x #mm
+  sv.y <- res.erz * pix.y #mm
+  ## Terepi képméret
+  S.x <- sv.x * a.k / 1000
+  S.y <- sv.y * a.k / 1000
+  ## Bázisirányú átfedés
+  p  <- 85/100 #% feladatból
+  q <- 55/100 #% feladatból
+  B <- S.y * (1-p)
+  A <- S.x * (1-q)
+  ## Terület
+  H <- 1200 #m feladatból
+  W <- 600 #m feladatból
+  ## Bázis irányú képszám
+  ns <- (H - S.y * (2*p-1))/ B + 1
+  ns <- 98
+  ## Szélesség irányú képszém
+  nk <- ( W - S.x) / A + 1
+  nk <- 12
+  ## Összes kép
+  ns * nk
+  ## A sebesség
+  d.t <- 2 # másodperc a kiírásból
+  v <- B/d.t
+  d.t <- 0.7 # amit tud az UAV
+  B/d.t
+  ## repülési hossz
+  (ns-1)*B
+  1151.2*nk
+  (nk - 1) * A
+  13814 + 523
+
+  (13814 + 523) / v
+
+  h.0/6
+
+  2416 + 49
+#+end_src
+
+* 1. feladat. kiírás                                               :noexport:
+** Hivatalos
+
+
+UAV repülés tervezése
+
+A feladat célja, hogy a hallgatók képesek legyenek egy UAV-vel történő
+repülés főbb paramétereinek meghatározására.
+
+A feladat megoldásához a következőkre van szükség:
+1. Válasszunk ki egy aktuális, számunkra érdekes (’wanted’) kamerás
+   UAV-t, amelynek a kamera-paraméterei jól dokumentáltak;
+2. Egy 1200 m (É-D-i irányban) * 600 m (K-Ny-i irányban) területet
+   szeretnénk úgy felmérni az eszközzel, hogy;
+   a. a képek terepi felbontása 2 cm legyen;
+   b. a képek között átfedés (p) legyen 85%-os;
+   c. a sorok közötti átfedés (q) pedig legyen 55%-os.
+
+*** Leadandók
+- [X] A kiválasztott UAV ismertetése (pl. 
+  - [X] repülési idő,
+  - [X] max. távolság,
+  - [X] max. magasság,
+  - [X] max.  szélsebesség, stb.);
+- [-] Az UAV-n található kamera részletesebb ismertetése (
+  - [ ] felbontás,
+  - [ ] c,
+  - [ ] képméret,
+  - [X] látószög,
+  - [X] képi pixelméret, stb.)
+- [ ] A tervezett repülés paramétereinek meghatározása:
+  - [ ] Repülési magasság (h 0 );
+  - [ ] Méretarány (M k );
+  - [ ] Terepi képméret (S x , S y );
+  - [ ] Bázistávolság (B);
+  - [ ] Sortávolság (A);
+  - [ ] Sorok száma (n s );
+  - [ ] Képek száma (n k );
+  - [ ] Összes kép (n sum );
+  - [ ] Repülési sebesség, ha 2 mp-enként készítünk felvételeket (v);
+  - [ ] A terület felméréséhez szükséges idő (t).
+
+** Órán mondott
+
+* org R                                                            :noexport:
+https://github.com/erikriverson/org-mode-R-tutorial/blob/master/org-mode-R-tutorial.org alapján:
+#+begin_src emacs-lisp :results silent
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (latex . t)))
+#+end_src
+
+C-c C-c a blokkban!
+
+C-c ' a külön szerkesztőben megnyitáshoz.
+
+#+header: :width 8 :height 8 :R-dev-args bg="olivedrab", fg="hotpink"
+#+begin_src R :file z.pdf :results graphics file
+plot(matrix(rnorm(100), ncol=2), type="l")
+#+end_src
+
+#+RESULTS:
+[[file:z.pdf]]
+
