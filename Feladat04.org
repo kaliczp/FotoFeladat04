@@ -55,7 +55,7 @@ plot(ter.gg)
 * A kiválasztott UAV ismertetése
 A [[fig:DJIMavic3Moutline]]. ábrán látható DJI Mavic 3M UAV
 specifikációját a honlapon közzétett adatok alapján adom meg
-(https://enterprise.dji.com/mavic-3-enterprise/specs). Az eszköz
+([[https://enterprise.dji.com/mavic-3-m/specs]]). Az eszköz
 /maximális repülési ideje/ szélmentes körülmények között a
 tengerszintről emelkedve, 100% töltöttségről indulva, állandó 9 m/s-os
 (32.4 km/h) sebességgel repülve 45 perc. A /maximális repülési
@@ -70,7 +70,7 @@ amely a terepi feladatok megoldásánál hasznos tulajdonság.
 
 #+CAPTION[DJI Mavic 3M]: DJI Mavic 3M UAV körvonalrajza
 #+NAME:   fig:DJIMavic3Moutline
-[[file:DJIMavic3Moutlinemod.pdf]]
+[[file:DJI_Mavic_3Moutline.pdf]]
 
 * Az UAV-n található kamera
 A háromtengelyű gimbalra szerelt kamera két érzékelővel rendelkezik.
