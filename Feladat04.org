@@ -103,34 +103,7 @@ továbbiakban ez alapján fogom elvégezni a számításokat.
 A szenzor mérete egy adatokat tartalmazó nem hivatalos oldalról
 letöltve: 17.3 \cdot 13 mm.
 
-** R-kód a kamera paramétereihez
-#+begin_src R
-  ## Egyenértékű fókusztávolság
-  c.35 <- 24
-  ## Fókusztávolság
-  c.real <- 12.29 #mm EXIF és GYIK
-  ## A 35 mm film átlója
-  s.35.atlo <- sqrt( 36 ^2 + 24^2)
-  ## Valódi átló
-  s.real.atlo <- s.35.atlo*c.real/c.35
-  ## Érzékelő felbontás
-  pix.x <- 5280
-  pix.y <- 3956
-  ## Képátló pixelben
-  s.pix.atlo <- sqrt( pix.x ^2 + pix.y ^2)
-  ## Pixelméret átlóból
-  s.real.atlo/s.pix.atlo
-  ## Pixelméret érzékelő méretből
-  erz.x <- 17.3
-  erz.y <- 13
-  erz.x/pix.x
-  erz.y/pix.y
-#+end_src
-
-#+RESULTS:
-: 20
-
-A fenti számítás alapján a pixel mérete:
+A mellékletben található kameraparaméter számítás alapján a pixel mérete:
 
 | A számítás alapja             | Pixelméret (\micro{}m) | Eltérés a 3.3 \micro{}m-től (nm) |
 |-------------------------------+------------------------+----------------------------------|
@@ -280,7 +253,33 @@ eléréséhez és az ereszkedéshez 2 * 24 másodpercet hozzáad. Így a repül�
 idő 41 percnek adódik, amit elméletileg tud a drón teljesíteni, de inkább
 két részre bontva repülnék.
 
-** R-kód a számításokhoz
+* Melléklet
+** A kamera paraméterek számítása
+#+NAME: sec:kamera
+#+begin_src R
+  ## Egyenértékű fókusztávolság
+  c.35 <- 24
+  ## Fókusztávolság
+  c.real <- 12.29 #mm EXIF és GYIK
+  ## A 35 mm film átlója
+  s.35.atlo <- sqrt( 36 ^2 + 24^2)
+  ## Valódi átló
+  s.real.atlo <- s.35.atlo*c.real/c.35
+  ## Érzékelő felbontás
+  pix.x <- 5280
+  pix.y <- 3956
+  ## Képátló pixelben
+  s.pix.atlo <- sqrt( pix.x ^2 + pix.y ^2)
+  ## Pixelméret átlóból
+  s.real.atlo/s.pix.atlo
+  ## Pixelméret érzékelő méretből
+  erz.x <- 17.3
+  erz.y <- 13
+  erz.x/pix.x
+  erz.y/pix.y
+#+end_src
+
+** A repülés adatainak számítása
 #+begin_src R
   ## Érzékelő pixelméret
   res.erz <- 0.0033 #mm a kézikönyvből 3.3 mikron
