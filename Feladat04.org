@@ -337,23 +337,23 @@ A feladat megoldásához a következőkre van szükség:
   - [X] max. távolság,
   - [X] max. magasság,
   - [X] max.  szélsebesség, stb.);
-- [-] Az UAV-n található kamera részletesebb ismertetése (
-  - [ ] felbontás,
-  - [ ] c,
-  - [ ] képméret,
+- [X] Az UAV-n található kamera részletesebb ismertetése (
+  - [X] felbontás,
+  - [X] c,
+  - [X] képméret,
   - [X] látószög,
   - [X] képi pixelméret, stb.)
-- [ ] A tervezett repülés paramétereinek meghatározása:
-  - [ ] Repülési magasság (h 0 );
-  - [ ] Méretarány (M k );
-  - [ ] Terepi képméret (S x , S y );
-  - [ ] Bázistávolság (B);
-  - [ ] Sortávolság (A);
-  - [ ] Sorok száma (n s );
-  - [ ] Képek száma (n k );
-  - [ ] Összes kép (n sum );
-  - [ ] Repülési sebesség, ha 2 mp-enként készítünk felvételeket (v);
-  - [ ] A terület felméréséhez szükséges idő (t).
+- [X] A tervezett repülés paramétereinek meghatározása:
+  - [X] Repülési magasság (h 0 );
+  - [X] Méretarány (M k );
+  - [X] Tenrepi képméret (S x , S y );
+  - [X] Bázistávolság (B);
+  - [X] Sortávolság (A);
+  - [X] Sorok száma (n s );
+  - [X] Képek száma (n k );
+  - [X] Összes kép (n sum );
+  - [X] Repülési sebesség, ha 2 mp-enként készítünk felvételeket (v);
+  - [X] A terület felméréséhez szükséges idő (t).
 
 ** Órán mondott
 
