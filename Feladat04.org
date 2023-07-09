@@ -26,7 +26,7 @@
 Feladatomban az alább megadott paraméterekkel rendelkező repülés
 végrehajtásához a tanszéken is rendelkezésre álló DJI Mavic Enterprise
 családba tartozó /DJI Mavic 3M UAV/-t választottam.
-A kiválasztott drónnal egy 1200 \cdot 600 m-es területet (lásd az [[fig:teroutline]]. ábrát) mérünk fel úgy, hogy
+A kiválasztott drónnal egy 1200\cdot{}600 m-es területet (lásd az [[fig:teroutline]]. ábrát) mérünk fel úgy, hogy
 a képek terepi felbontása 2 cm;
 a képek között átfedés ($p$) 85%-os;
 a sorok közötti átfedés ($q$) 55%-os legyen.
@@ -101,7 +101,7 @@ készített kép EXIF információi alapján is a kamera állandó 12.29 mm. A
 továbbiakban ez alapján fogom elvégezni a számításokat.
 
 A szenzor mérete egy adatokat tartalmazó nem hivatalos oldalról
-letöltve: 17.3 \cdot 13 mm.
+letöltve: 17.3\cdot{}13 mm.
 
 A mellékletben található kameraparaméter számítás alapján a pixel mérete:
 
@@ -238,9 +238,9 @@ tagországokban ezt 19 m/s-ra korlátozzák, de még ez is több.
 ** A terület felméréséhez szükséges idő
 Ehhez a repülési utat kell meghatározni először. A repülési hossz
 \((n_s - 1) \cdot B = 1151.2\,\mathrm{m}\). Ezt n_k-szor tesszük meg
-(\(n_k \cdot 1151.2\)), így 13\,814 m-t kell fényképezés idején
+(\(n_k \cdot 1151.2\)), így 13 814 m-t kell fényképezés idején
 megtenni. Ehhez hozzáadjuk a sorok közötti utat (\((n_k - 1) \cdot
-A\)), azaz 522.7 m-t. Tehát összesen kis kerekítéssel 14\,337 m-t kell
+A\)), azaz 522.7 m-t. Tehát összesen kis kerekítéssel 14 337 m-t kell
 repülni fényképezés közben.
 
 \[t = s / v = 2416 \mathrm{s}\]
@@ -249,7 +249,7 @@ A repülés idő tehát kicsivel több mint 40 perc, amit az UAV egy
 feltöltéssel repülhetne (a specifikáció szerint 43 percet tud), de még
 a felszállást és a leszállást is bele kell kalkulálni. Normál módban 6
 m/s sebességgel emelkedhet és süllyedhet, ami a h_0 repülési magasság
-eléréséhez és az ereszkedéshez 2\cdot 12 másodpercet hozzáad. Így a repülési
+eléréséhez és az ereszkedéshez 2 \cdot 12 másodpercet hozzáad. Így a repülési
 idő 41 percnek adódik, amit elméletileg tud a drón teljesíteni, de inkább
 két részre bontva repülnék.
 
