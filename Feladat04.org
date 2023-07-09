@@ -246,10 +246,10 @@ repülni fényképezés közben.
 \[t = s / v = 2416 \mathrm{s}\]
 
 A repülés idő tehát kicsivel több mint 40 perc, amit az UAV egy
-feltöltéssel repülhetne (a specifikáció szerint 45 percet tud), de még
+feltöltéssel repülhetne (a specifikáció szerint 43 percet tud), de még
 a felszállást és a leszállást is bele kell kalkulálni. Normál módban 6
 m/s sebességgel emelkedhet és süllyedhet, ami a h_0 repülési magasság
-eléréséhez és az ereszkedéshez 2 * 24 másodpercet hozzáad. Így a repülési
+eléréséhez és az ereszkedéshez 2\cdot 12 másodpercet hozzáad. Így a repülési
 idő 41 percnek adódik, amit elméletileg tud a drón teljesíteni, de inkább
 két részre bontva repülnék.
 
