@@ -38,7 +38,7 @@ A feladat végrehajtását a feladatkiírásnak megfelelően részletezem.
 
 
 ** Terület ábra                                                    :noexport:
-#+header: :width 8 :height 8
+#+header: :width 6 :height 6
 #+begin_src R :file simpleter.pdf :results graphics file
 library(sf)
 library(ggplot2)
@@ -50,6 +50,9 @@ geom_sf() +
 annotation_scale(location = "bl", width_hint = 0.4)
 plot(ter.gg)
 #+end_src
+
+#+RESULTS:
+[[file:simpleter.pdf]]
 
 
 * A kiválasztott UAV ismertetése
@@ -140,25 +143,19 @@ A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}
 
 * A tervezett repülés paraméterei
 ** Méretarány
-\[a_k = \frac{res}{res'} =  6060.606\]
-
-\[M_k = 1:6060\]
+\[a_k = \frac{res}{res'} =  6060.606 \text{, amelyből  } M_k = 1:6060\]
 ** Repülési magasság
 \[h_0 = \frac{c / 1000}{a_k} = 74.5 \mathrm{m}\]
 
 ** Terepi képméret
-\[S_x = s'_x \cdot a_k = 105.6 \mathrm{m}\]
-
-\[S_y  = s'_x \cdot a_k = 79.12 \mathrm{m}\]
+\[S_x = s'_x \cdot a_k = 105.6 \mathrm{m, valamint  } S_y  = s'_x \cdot a_k = 79.12 \mathrm{m}\]
 
 #+CAPTION[Vázlat]: A térképezendő terület és a kiszámított terepi képméret
 #+NAME:   fig:terS
 [[file:terS.pdf]]
 
-
-
 ** Terület ábra terepi képmérettel                                 :noexport:
-#+header: :width 8 :height 8
+#+header: :width 6 :height 6
 #+begin_src R :file terS.pdf :results graphics file
   library(sf)
   library(ggplot2)
@@ -192,7 +189,7 @@ A sorok száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény 
 [[file:tersorell.pdf]]
 
 ** Grafikus ellenőrzés bázis irány                                 :noexport:
-#+header: :width 8 :height 8
+#+header: :width 6 :height 6
 #+begin_src R :file tersorell.pdf :results graphics file
   library(sf)
   library(ggplot2)
@@ -228,7 +225,7 @@ grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
 [[file:teroszlell.pdf]]
 
 ** Grafikus ellenőrzés bázis irányra merőleges                     :noexport:
-#+header: :width 8 :height 8
+#+header: :width 6 :height 6
 #+begin_src R :file teroszlell.pdf :results graphics file
   library(sf)
   library(ggplot2)
