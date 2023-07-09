@@ -58,7 +58,7 @@ specifikációját a honlapon közzétett adatok alapján adom meg
 ([[https://enterprise.dji.com/mavic-3-m/specs]]). Az eszköz
 /maximális repülési ideje/ szélmentes körülmények között a
 tengerszintről emelkedve, 100% töltöttségről indulva, állandó 9 m/s-os
-(32.4 km/h) sebességgel repülve 45 perc. A /maximális repülési
+(32.4 km/h) sebességgel repülve 43 perc. A /maximális repülési
 távolság/ 32 km, /magasság/ 6000 m hasznos teher nélkül.Az emelkedés
 és landolás /legfeljebb 12 m/s szélsebsség/ mellett történhet.  Az
 opcionális RTK modul használatával 0.1 m pontosan tud navigálni
@@ -73,14 +73,15 @@ amely a terepi feladatok megoldásánál hasznos tulajdonság.
 [[file:DJI_Mavic_3Moutline.pdf]]
 
 * Az UAV-n található kamera
-A háromtengelyű gimbalra szerelt kamera két érzékelővel rendelkezik.
-A lejebb bemutatott 20 MP-es 4:3 képarányú (Wide) kamera fölött egy 12
-MP-es zoom kamera található (lásd a [[fig:DJIMavic3Moutline]]. ábrát),
-amelyet jól használható kiegészítő funkció, de ez a felvételek
+A háromtengelyű gimbalra szerelt kamera öt érzékelővel rendelkezik.
+A lejebb bemutatott 20 MP-es 4/3 képarányú (RGB) kamera fölött négy
+5MP-es kamera található (lásd a [[fig:DJIMavic3Moutline]]. ábrát),
+amelyek távérzékelési célokra jól használható zöld, vörös, vörös edge
+és közeli infra-vörös tartományokban készítenek képeket. Ez a blokk a felvételek
 készítésénél nem használt, így a bemutatásától most eltekintek.
 
 A felvételezés tervezéséhez figyelembe vett nagylátószögű főkamera
-(Wide) érzékelője a gyenge fényviszonyok között is jó képet adó, nagy
+(RGB) érzékelője a gyenge fényviszonyok között is jó képet adó, nagy
 méretű 3.3 \micro{}m-es pixelekkel rendelkezik. Az elmozdulás mentes
 képek készítését támogató 0.7 másodperces intervallumú képkészítésre
 alkalmas mechanikus elsütőberendezést építettek bele, amely a
@@ -91,10 +92,10 @@ ferde-tengelyű felvételeket.
 
 A gyártó által megadott adatok alapján a /képi pixelméret/
 5280\cdot{}3956 pixel, a kamera /látószöge/ 84°, végül az /ekvivalens
-fókusztávolság/ (c_{35}) 24 mm-es. Az interneten közzétett alternatív
-forrásból a kameraállandó (\(c\)) értéke 12.3 mm. A szenzor mérete
-17.3 \cdot 13 mm.  Az eszközzel készített kép alapján a kamera állandó
-12.29 mm. A továbbiakban ez alapján fogom elvégezni a számításokat.
+fókusztávolság/ (c_{35}) 24 mm-es. A készülék GYIKjában közzétett
+forrásból a kameraállandó (\(c\)) értéke 12.29 mm. Az eszközzel
+készített kép EXIF információi alapján is a kamera állandó 12.29 mm. A
+továbbiakban ez alapján fogom elvégezni a számításokat.
 
 ** R-kód a kamera paramétereihez                                   :noexport:
 #+begin_src R
@@ -237,7 +238,8 @@ Először kiszámolom a feladatnak megfelelően.
 
 Ha kihasználjuk a DJI Mavic 3M képességeit a képeket 0.7 másodpercenként készíthetjük,
 így a sebesség akár 16.95 m/s is lehetne, amelyet a drón még talán enyhén szeles időben
-is tud, ugyanis 21 m/s a maximális sebessége haladási irányban.
+is tud, ugyanis 21 m/s a maximális sebessége haladási irányban, bár az EU
+tagországokban ezt 19 m/s-ra korlátozzák, de még ez is több.
 
 ** A terület felméréséhez szükséges idő
 Ehhez a repülési utat kell meghatározni először. A repülési hossz
