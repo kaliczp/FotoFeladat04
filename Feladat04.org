@@ -144,10 +144,7 @@ A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}
 
 \[M_k = 1:6060\]
 ** Repülési magasság
-\[h_0 = \frac{c_{35} / 1000}{a_k} = 145.5 \mathrm{m}\]
-
-Ez túl magas. 120 m-en szabad repülni. Célszerű lenne nagyobb felbontással továbbszámolni,
-de most a konzultációig hagyom.
+\[h_0 = \frac{c / 1000}{a_k} = 74.5 \mathrm{m}\]
 
 ** Terepi képméret
 \[S_x = s'_x \cdot a_k = 105.6 \mathrm{m}\]
