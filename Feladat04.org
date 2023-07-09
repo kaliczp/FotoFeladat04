@@ -97,18 +97,45 @@ forrásból a kameraállandó (\(c\)) értéke 12.29 mm. Az eszközzel
 készített kép EXIF információi alapján is a kamera állandó 12.29 mm. A
 továbbiakban ez alapján fogom elvégezni a számításokat.
 
-** R-kód a kamera paramétereihez                                   :noexport:
+A szenzor mérete egy adatokat tartalmazó nem hivatalos oldalról
+letöltve: 17.3 \cdot 13 mm.
+
+** R-kód a kamera paramétereihez
 #+begin_src R
   ## Egyenértékű fókusztávolság
-  c_35 <- 24
+  c.35 <- 24
+  ## Fókusztávolság
+  c.real <- 12.29 #mm EXIF és GYIK
   ## A 35 mm film átlója
-  s_35_atlo <- sqrt( 36 ^2 + 24^2)
-
+  s.35.atlo <- sqrt( 36 ^2 + 24^2)
+  ## Valódi átló
+  s.real.atlo <- s.35.atlo*c.real/c.35
+  ## Érzékelő felbontás
+  pix.x <- 5280
+  pix.y <- 3956
+  ## Képátló pixelben
+  s.pix.atlo <- sqrt( pix.x ^2 + pix.y ^2)
+  ## Pixelméret átlóból
+  s.real.atlo/s.pix.atlo
+  ## Pixelméret érzékelő méretből
+  erz.x <- 17.3
+  erz.y <- 13
+  erz.x/pix.x
+  erz.y/pix.y
 #+end_src
 
 #+RESULTS:
 : 20
 
+A fenti számítás alapján a pixel mérete:
+
+| A számítás alapja             | Pixelméret (\micro{}m) | Eltérés a 3.3 \micro{}m-től (nm) |
+|-------------------------------+------------------------+----------------------------------|
+| az egyenértékű fókusztávolság |                 3.3580 |                            58.21 |
+| az érzékelő x oldala          |                 3.2765 |                           -23.48 |
+| az érzékelő y oldala          |                 3.2861 |                           -22.16 |
+
+A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}m-t.
 
 
 * A tervezett repülés paraméterei
