@@ -172,7 +172,7 @@ A sorok száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény 
 
   kepek <- c(kep, kep + c(0,11.868))
 
-  for(szor in 2:98) {
+  for(szor in 2:97) {
       kepek <- c(kepek, kep + c(0, szor * 11.868))
   }
 
@@ -208,11 +208,11 @@ grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
 
   kepek <- c(kep, kep - c(47.52,0))
 
-  for(szor in 2:12) {
+  for(szor in 2:11) {
       kepek <- c(kepek, kep - c(szor * 47.52, 0))
   }
 
-  ter2 <- c(ter, kepek - c(105.6-47.52, 0))
+  ter2 <- c(ter, kepek - c(105.6, 0))
 
   ter.gg <- ggplot(data = ter2) +
   geom_sf() +
