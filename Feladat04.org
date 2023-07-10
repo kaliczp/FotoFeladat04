@@ -152,11 +152,11 @@ A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}
 \[B = S_y \cdot (1-p) =  11.868\,\mathrm{m}\]
 ** Sortávolság
 \[A = S_x * (1-q) = 47.52\,\mathrm{m}\]
-** Sorok száma
-\[n_s = (H - Sy (2p-1))/ B + 1 = 97.4455\]
-A sorok száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény a [[fig:tersorell]]. ábrán.
+** Képek száma
+\[n_k = (H - Sy (2p-1))/ B + 1 = 97.4455\]
+A képek száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény a [[fig:tersorell]]. ábrán.
 
-#+CAPTION[SorEll]: A sorok grafikus ellenőrzése
+#+CAPTION[SorEll]: A képszám grafikus ellenőrzése
 #+NAME:   fig:tersorell
 [[file:tersorell.pdf]]
 
@@ -186,13 +186,13 @@ A sorok száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény 
 #+RESULTS:
 [[file:tersorell.pdf]]
 
-** Képek száma
-\[n_k = ( W - S_x) / A + 1 = 11.404\]
+** Sorok száma
+\[n_s = ( W - S_x) / A + 1 = 11.404\]
 
-A bázis irányra merőlegesen tehát 12 képnek kell lennie. A számítást
+A bázis irányra merőlegesen tehát 12 sornak kell lennie. A számítást
 grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
 
-#+CAPTION[SorEll]: Az oszlopok grafikus ellenőrzése
+#+CAPTION[SorEll]: Az sorok számának grafikus ellenőrzése
 #+NAME:   fig:teroszlell
 [[file:teroszlell.pdf]]
 
@@ -236,9 +236,9 @@ tagországokban ezt 19 m/s-ra korlátozzák, de még ez is több.
 
 ** A terület felméréséhez szükséges idő
 Ehhez a repülési utat kell meghatározni először. A repülési hossz
-\((n_s - 1) \cdot B = 1151.2\,\mathrm{m}\). Ezt n_k-szor tesszük meg
-(\(n_k \cdot 1151.2\)), így 13 814 m-t kell fényképezés idején
-megtenni. Ehhez hozzáadjuk a sorok közötti utat (\((n_k - 1) \cdot
+\((n_k - 1) \cdot B = 1151.2\,\mathrm{m}\). Ezt n_s-szer tesszük meg
+(\(n_s \cdot 1151.2\)), így 13 814 m-t kell fényképezés idején
+megtenni. Ehhez hozzáadjuk a sorok közötti utat (\((n_s - 1) \cdot
 A\)), azaz 522.7 m-t. Tehát összesen kis kerekítéssel 14 337 m-t kell
 repülni fényképezés közben.
 
@@ -310,26 +310,26 @@ két részre bontva repülnék.
   H <- 1200 #m feladatból
   W <- 600 #m feladatból
   ## Bázis irányú képszám
-  ns <- (H - S.y * (2*p-1))/ B + 1 # [1] 97.44557 db
-  ns <- 98 # db felfelé kerekítve
+  nk <- (H - S.y * (2*p-1))/ B + 1 # [1] 97.44557 db
+  nk <- 98 # db felfelé kerekítve
   ## Ellenőrzés
-  (ns - 1) * B + S.y * (2 * p - 1) # [1] 1206.58 m
-  ## Szélesség irányú képszém
-  nk <- ( W - S.x) / A + 1 # [1] 11.40404 db
-  nk <- 12 # db felfelé kerekítve
+  (nk - 1) * B + S.y * (2 * p - 1) # [1] 1206.58 m
+  ## Sorok száma
+  ns <- ( W - S.x) / A + 1 # [1] 11.40404 db
+  ns <- 12 # db felfelé kerekítve
   ## Ellenőrzés
-  (nk - 1) * A + S.x # [1] 628.32 m
+  (ns - 1) * A + S.x # [1] 628.32 m
   ## Összes kép
-  ns * nk # [1] 1176 db
+  nk * ns # [1] 1176 db
   ## A sebesség
   d.t <- 2 # másodperc a kiírásból
   v <- B/d.t # [1] 5.934 m/s
   d.t <- 0.7 # amit tud az UAV RGB-vel
   B/d.t # [1] 16.95429 m/s
   ## %epülési hossz
-  (ns-1)*B
+  (nk-1)*B
   1151.2*nk
-  (nk - 1) * A
+  (ns - 1) * A
   13814 + 523 # [1] 14337 m
 
   (13814 + 523) / v # [1] 2416.077 s
