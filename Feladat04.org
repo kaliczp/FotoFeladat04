@@ -115,7 +115,7 @@ A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}
 
 * A tervezett repülés paraméterei
 ** Méretarány
-\[a_k = \frac{res}{res'} =  6060.606 \text{, amelyből  } M_k = 1:6060\]
+\[a_k = \frac{res}{res'} =  6060.606 \text{, amelyből  } M_k = 1:6061\]
 ** Repülési magasság
 \[h_0 = \frac{c / 1000}{a_k} = 74.5 \mathrm{m}\]
 
