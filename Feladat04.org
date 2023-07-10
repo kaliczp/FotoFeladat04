@@ -1,5 +1,5 @@
 #+title: UAV repülés tervezése
-#+date: 2023. július 6.
+#+date: 2023.
 #+author: Kalicz Péter
 #+email: kalicz.peter@uni-sopron.hu
 #+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
