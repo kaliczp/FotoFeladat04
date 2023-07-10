@@ -36,25 +36,6 @@ A feladat végrehajtását a feladatkiírásnak megfelelően részletezem.
 #+NAME:   fig:teroutline
 [[file:simpleter.pdf]]
 
-
-** Terület ábra                                                    :noexport:
-#+header: :width 6 :height 6
-#+begin_src R :file simpleter.pdf :results graphics file
-library(sf)
-library(ggplot2)
-library(ggspatial)
-ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
-# plot(ter, axes = TRUE)
-ter.gg <- ggplot(data = ter) +
-geom_sf() +
-annotation_scale(location = "bl", width_hint = 0.4)
-plot(ter.gg)
-#+end_src
-
-#+RESULTS:
-[[file:simpleter.pdf]]
-
-
 * A kiválasztott UAV ismertetése
 A [[fig:DJIMavic3Moutline]]. ábrán látható DJI Mavic 3M UAV
 specifikációját a honlapon közzétett adatok alapján adom meg
@@ -126,28 +107,6 @@ A továbbiakban használom a felhasználói kézikönyvben megadott 3.3 \micro{}
 #+NAME:   fig:terS
 [[file:terS.pdf]]
 
-** Terület ábra terepi képmérettel                                 :noexport:
-#+header: :width 6 :height 6
-#+begin_src R :file terS.pdf :results graphics file
-  library(sf)
-  library(ggplot2)
-  library(ggspatial)
-  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
-  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
-
-
-  ter2 <- c(ter, kep)
-
-  ter.gg <- ggplot(data = ter2) +
-  geom_sf() +
-  annotation_scale(location = "bl", width_hint = 0.4)
-  plot(ter.gg)
-#+end_src
-
-#+RESULTS:
-[[file:terS.pdf]]
-
-
 ** Bázistávolság
 \[B = S_y \cdot (1-p) =  11.868\,\mathrm{m}\]
 ** Sortávolság
@@ -160,32 +119,6 @@ A képek száma legyen 98. A számítást grafikusan ellenőriztem. Az eredmény
 #+NAME:   fig:tersorell
 [[file:tersorell.pdf]]
 
-** Grafikus ellenőrzés bázis irány                                 :noexport:
-#+header: :width 6 :height 6
-#+begin_src R :file tersorell.pdf :results graphics file
-  library(sf)
-  library(ggplot2)
-  library(ggspatial)
-  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
-  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
-
-  kepek <- c(kep, kep + c(0,11.868))
-
-  for(szor in 2:97) {
-      kepek <- c(kepek, kep + c(0, szor * 11.868))
-  }
-
-  ter2 <- c(ter, kepek - c(0, 11.868))
-
-  ter.gg <- ggplot(data = ter2) +
-  geom_sf() +
-  annotation_scale(location = "bl", width_hint = 0.4)
-  plot(ter.gg)
-#+end_src
-
-#+RESULTS:
-[[file:tersorell.pdf]]
-
 ** Sorok száma
 \[n_s = ( W - S_x) / A + 1 = 11.404\]
 
@@ -194,32 +127,6 @@ grafikusan ellenőriztem. Az eredmény a [[fig:teroszlell]]. ábrán.
 
 #+CAPTION[SorEll]: Az sorok számának grafikus ellenőrzése
 #+NAME:   fig:teroszlell
-[[file:teroszlell.pdf]]
-
-** Grafikus ellenőrzés bázis irányra merőleges                     :noexport:
-#+header: :width 6 :height 6
-#+begin_src R :file teroszlell.pdf :results graphics file
-  library(sf)
-  library(ggplot2)
-  library(ggspatial)
-  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)), coords = c("szel","mag"))))
-  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600), coords = c("szel","mag"))))
-
-  kepek <- c(kep, kep - c(47.52,0))
-
-  for(szor in 2:11) {
-      kepek <- c(kepek, kep - c(szor * 47.52, 0))
-  }
-
-  ter2 <- c(ter, kepek - c(105.6, 0))
-
-  ter.gg <- ggplot(data = ter2) +
-  geom_sf() +
-  annotation_scale(location = "bl", width_hint = 0.4)
-  plot(ter.gg)
-#+end_src
-
-#+RESULTS:
 [[file:teroszlell.pdf]]
 
 ** Összes kép
@@ -339,6 +246,105 @@ két részre bontva repülnék.
 
   2416 + 2 * 12.4 # [1] 2440.8 s = 40.68 min
 #+end_src
+
+** Terület ábra
+#+header: :width 6 :height 6
+#+begin_src R :file simpleter.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)),
+				    coords = c("szel","mag"))))
+  # plot(ter, axes = TRUE)
+  ter.gg <- ggplot(data = ter) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:simpleter.pdf]]
+
+
+** Terület ábra terepi képmérettel
+#+header: :width 6 :height 6
+#+begin_src R :file terS.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)),
+				    coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600),
+				    coords = c("szel","mag"))))
+
+  ter2 <- c(ter, kep)
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:terS.pdf]]
+
+** Grafikus ellenőrzés bázis irány
+#+header: :width 6 :height 6
+#+begin_src R :file tersorell.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)),
+				    coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600),
+				    coords = c("szel","mag"))))
+
+  kepek <- c(kep, kep + c(0,11.868))
+
+  for(szor in 2:97) {
+      kepek <- c(kepek, kep + c(0, szor * 11.868))
+  }
+
+  ter2 <- c(ter, kepek - c(0, 11.868))
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:tersorell.pdf]]
+
+** Grafikus ellenőrzés bázis irányra merőleges
+#+header: :width 6 :height 6
+#+begin_src R :file teroszlell.pdf :results graphics file
+  library(sf)
+  library(ggplot2)
+  library(ggspatial)
+  ter <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,1200), szel = c(0,600)),
+				    coords = c("szel","mag"))))
+  kep <- st_as_sfc(st_bbox(st_as_sf(data.frame(mag = c(0,79.12), szel = c(0,105.6)+600),
+				    coords = c("szel","mag"))))
+
+  kepek <- c(kep, kep - c(47.52,0))
+
+  for(szor in 2:11) {
+      kepek <- c(kepek, kep - c(szor * 47.52, 0))
+  }
+
+  ter2 <- c(ter, kepek - c(105.6, 0))
+
+  ter.gg <- ggplot(data = ter2) +
+  geom_sf() +
+  annotation_scale(location = "bl", width_hint = 0.4)
+  plot(ter.gg)
+#+end_src
+
+#+RESULTS:
+[[file:teroszlell.pdf]]
+
+
 
 * 1. feladat. kiírás                                               :noexport:
 ** Hivatalos
